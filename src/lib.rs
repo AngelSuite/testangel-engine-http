@@ -1,8 +1,10 @@
-use std::{cell::RefCell, collections::HashMap, sync::Arc};
-
 use parking_lot::Mutex;
-use reqwest::{Method, StatusCode, blocking::RequestBuilder, header::HeaderMap};
+use reqwest::{StatusCode, blocking::RequestBuilder, header::HeaderMap};
 use testangel_engine::{Evidence, EvidenceContent, engine};
+
+use crate::http_evidence::{req_to_evidence, res_to_evidence};
+
+mod http_evidence;
 
 engine! {
     /// Make HTTP requests.
@@ -111,20 +113,25 @@ engine! {
             name = "Send Request",
             flags = InstructionFlags::AUTOMATIC,
         )]
-        fn send() {
+        fn send() -> #[output(id = "body", name = "Response Body")] String {
             if dry_run {
                 return Ok(());
             }
 
             if let Some(builder) = state.builder.take() {
-                evidence.push(Evidence { label: "HTTP Request".to_string(), content: EvidenceContent::Textual(String::new()) });
-                let res = builder.into_inner().send()?;
-                // TODO Log evidence
-                evidence.push(Evidence { label: "HTTP Response".to_string(), content: EvidenceContent::Textual(String::new()) });
+                let (cl, req) = builder.into_inner().build_split();
+                let req = req?;
+                evidence.push(Evidence { label: "HTTP Request".to_string(), content: EvidenceContent::Textual(req_to_evidence(&req)) });
+
+                let res = cl.execute(req)?;
 
                 // Store last request values
                 state.last_status = Some(res.status());
                 state.last_headers = Some(res.headers().clone());
+                let mut body = String::new();
+                evidence.push(Evidence { label: "HTTP Response".to_string(), content: EvidenceContent::Textual(res_to_evidence(res, &mut body)) });
+
+                body
             } else {
                 Err("Trying to send a request without preparing a request first!")?
             }

@@ -120,12 +120,12 @@ checksum = "d71b6127be86fdcfddb610f7182ac57211d4b18a3e9c82eb2d17662f2227ad6a"
 
 [[package]]
 name = "cbindgen"
-version = "0.28.0"
+version = "0.29.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "eadd868a2ce9ca38de7eeafdcec9c7065ef89b42b32f0839278d55f35c54d1ff"
+checksum = "975982cdb7ad6a142be15bdf84aea7ec6a9e5d4d797c004d43185b24cfe4e684"
 dependencies = [
  "clap",
- "heck 0.4.1",
+ "heck",
  "indexmap",
  "log",
  "proc-macro2",
@@ -234,41 +234,16 @@ dependencies = [
 
 [[package]]
 name = "dynamic-plugin"
-version = "0.6.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d79537f9edfda6c97f47d9066ce8f6a881e94f8a872c1aae216e028cc4012524"
-dependencies = [
- "dynamic-plugin-macros 0.6.0",
- "libc",
- "libloading",
- "sa",
- "thiserror",
-]
-
-[[package]]
-name = "dynamic-plugin"
 version = "0.7.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "07172955c8082b83ceecec137fd82f3554c8bf6ff6d226595d9d83a188767742"
 dependencies = [
  "const_format",
- "dynamic-plugin-macros 0.7.0",
+ "dynamic-plugin-macros",
  "libc",
  "libloading",
  "sa",
  "thiserror",
-]
-
-[[package]]
-name = "dynamic-plugin-macros"
-version = "0.6.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3e1fecedb583ec8ad27a1da169864bda3a5fec5bbb32127278ffa5c379681af2"
-dependencies = [
- "proc-macro-error2",
- "proc-macro2",
- "quote",
- "syn",
 ]
 
 [[package]]
@@ -414,7 +389,7 @@ dependencies = [
  "cfg-if",
  "libc",
  "r-efi",
- "wasi 0.14.2+wasi-0.2.4",
+ "wasi 0.14.3+wasi-0.2.4",
 ]
 
 [[package]]
@@ -459,12 +434,6 @@ name = "hashbrown"
 version = "0.15.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9229cfe53dfd69f0609a49f65461bd93001ea1ef889cd5529dd176593f5338a1"
-
-[[package]]
-name = "heck"
-version = "0.4.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "95505c38b4572b2d910cecb0281560f54b440a19336cbbcb27bf6ce6adc6f5a8"
 
 [[package]]
 name = "heck"
@@ -1363,10 +1332,10 @@ dependencies = [
 
 [[package]]
 name = "testangel-engine"
-version = "1.0.0"
-source = "git+https://github.com/AngelSuite/TestAngel#ce6f2936dca0957c9612a4c315e755bd7aefd2a6"
+version = "1.1.0"
+source = "git+https://github.com/AngelSuite/TestAngel?branch=next#ec398ade5ef64cd5a494798044f1b6ba18b71786"
 dependencies = [
- "dynamic-plugin 0.6.0",
+ "dynamic-plugin",
  "getset",
  "lazy_static",
  "testangel-engine-macros",
@@ -1375,10 +1344,10 @@ dependencies = [
 
 [[package]]
 name = "testangel-engine-macros"
-version = "1.0.0"
-source = "git+https://github.com/AngelSuite/TestAngel#ce6f2936dca0957c9612a4c315e755bd7aefd2a6"
+version = "1.1.0"
+source = "git+https://github.com/AngelSuite/TestAngel?branch=next#ec398ade5ef64cd5a494798044f1b6ba18b71786"
 dependencies = [
- "heck 0.5.0",
+ "heck",
  "proc-macro-error2",
  "proc-macro2",
  "quote",
@@ -1389,7 +1358,7 @@ dependencies = [
 name = "testangel-http"
 version = "0.1.0"
 dependencies = [
- "dynamic-plugin 0.7.0",
+ "dynamic-plugin",
  "parking_lot",
  "reqwest",
  "testangel-engine",
@@ -1397,8 +1366,8 @@ dependencies = [
 
 [[package]]
 name = "testangel-ipc"
-version = "3.0.0"
-source = "git+https://github.com/AngelSuite/TestAngel#ce6f2936dca0957c9612a4c315e755bd7aefd2a6"
+version = "3.1.0"
+source = "git+https://github.com/AngelSuite/TestAngel?branch=next#ec398ade5ef64cd5a494798044f1b6ba18b71786"
 dependencies = [
  "bitflags",
  "cbindgen",
@@ -1663,11 +1632,11 @@ checksum = "ccf3ec651a847eb01de73ccad15eb7d99f80485de043efb2f370cd654f4ea44b"
 
 [[package]]
 name = "wasi"
-version = "0.14.2+wasi-0.2.4"
+version = "0.14.3+wasi-0.2.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9683f9a5a998d873c0d21fcbe3c083009670149a8fab228644b8bd36b2c48cb3"
+checksum = "6a51ae83037bdd272a9e28ce236db8c07016dd0d50c27038b3f407533c030c95"
 dependencies = [
- "wit-bindgen-rt",
+ "wit-bindgen",
 ]
 
 [[package]]
@@ -1952,13 +1921,10 @@ dependencies = [
 ]
 
 [[package]]
-name = "wit-bindgen-rt"
-version = "0.39.0"
+name = "wit-bindgen"
+version = "0.45.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6f42320e61fe2cfd34354ecb597f86f413484a798ba44a8ca1165c58d42da6c1"
-dependencies = [
- "bitflags",
-]
+checksum = "052283831dbae3d879dc7f51f3d92703a316ca49f91540417d38591826127814"
 
 [[package]]
 name = "writeable"

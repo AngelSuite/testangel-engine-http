@@ -10,4 +10,4 @@ crate-type = ["cdylib"]
 dynamic-plugin = "0.7.0"
 parking_lot = "0.12.4"
 reqwest = { version = "0.12.23", features = ["blocking"] }
-testangel-engine = { git = "https://github.com/AngelSuite/TestAngel", version = "1.0.0" }
+testangel-engine = { git = "https://github.com/AngelSuite/TestAngel", version = "1.1.0", branch = "next" }

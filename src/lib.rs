@@ -23,7 +23,7 @@ engine! {
         version = env!("CARGO_PKG_VERSION"),
     )]
     #[derive(Default)]
-    struct HTTP {
+    struct Http {
         /// The reqwest client
         client: reqwest::blocking::Client,
 
@@ -36,7 +36,7 @@ engine! {
         builder: Option<Mutex<RequestBuilder>>,
     }
 
-    impl HTTP {
+    impl Http {
         #[instruction(
             name = "Prepare GET Request",
             flags = InstructionFlags::INFALLIBLE | InstructionFlags::AUTOMATIC,
@@ -121,15 +121,17 @@ engine! {
             if let Some(builder) = state.builder.take() {
                 let (cl, req) = builder.into_inner().build_split();
                 let req = req?;
-                evidence.push(Evidence { label: "HTTP Request".to_string(), content: EvidenceContent::Textual(req_to_evidence(&req)) });
-
+                let url = req.url().to_string();
+                let req_ev = req_to_evidence(&req);
                 let res = cl.execute(req)?;
 
                 // Store last request values
                 state.last_status = Some(res.status());
                 state.last_headers = Some(res.headers().clone());
                 let mut body = String::new();
-                evidence.push(Evidence { label: "HTTP Response".to_string(), content: EvidenceContent::Textual(res_to_evidence(res, &mut body)) });
+                let res_ev = res_to_evidence(res, &mut body);
+
+                evidence.push(Evidence { label: format!("Request to {url}"), content: EvidenceContent::HttpRequestResponse(req_ev, res_ev) });
 
                 body
             } else {

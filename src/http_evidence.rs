@@ -17,11 +17,11 @@ pub fn req_to_evidence(req: &Request) -> String {
         // SAFETY: */* is always valid
         headers.append("accept", HeaderValue::from_str("*/*").unwrap());
     }
-    if !headers.contains_key("host") {
-        if let Some(host) = req.url().host_str() {
-            // SAFETY: host is always a valid string
-            headers.append("host", HeaderValue::from_str(host).unwrap());
-        }
+    if !headers.contains_key("host")
+        && let Some(host) = req.url().host_str()
+    {
+        // SAFETY: host is always a valid string
+        headers.append("host", HeaderValue::from_str(host).unwrap());
     }
     let headers = headers_to_evidence(&headers);
     let body = req.body();
